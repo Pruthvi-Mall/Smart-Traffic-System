@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Smart Traffic Management</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Advanced Traffic Management Dashboard</h1>
+            <nav>
+                <ul>
+                    <li><a href="#dashboard">Dashboard</a></li>
+                    <li><a href="#intersections-map">Intersections</a></li>
+                    <li><a href="#analytics">Analytics (Conceptual)</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="dashboard">
+            <h2>System Overview & Controls</h2>
+            <div class="dashboard-controls">
+                <button id="start-simulation-btn">Start Simulation</button>
+                <button id="stop-simulation-btn" disabled>Stop Simulation</button> <!-- Starts disabled -->
+                <button id="reset-simulation-btn">Reset Simulation</button>
+            </div>
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <h3>Overall Congestion</h3>
+                    <p id="overall-congestion">N/A</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Active Incidents</h3>
+                    <p id="active-incidents">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Simulation Time</h3>
+                    <p id="simulation-time">00:00</p>
+                </div>
+            </div>
+            <div class="event-controls">
+                <h4>Simulate Event:</h4>
+                <select id="event-intersection-select">
+                    <option value="A">Intersection A</option>
+                    <option value="B">Intersection B</option>
+                    <option value="C">Intersection C</option>
+                </select>
+                <select id="event-type-select">
+                    <option value="accident">Accident (Blocks 1 Lane)</option>
+                    <option value="road_closure">Road Closure (Full Block)</option>
+                </select>
+                <select id="event-approach-select">
+                    <option value="N">North Approach</option>
+                    <option value="S">South Approach</option>
+                    <option value="E">East Approach</option>
+                    <option value="W">West Approach</option>
+                </select>
+                <button id="trigger-event-btn">Trigger Event</button>
+                <button id="clear-events-btn">Clear All Events</button>
+            </div>
+        </section>
+
+        <section id="intersections-map">
+            <h2>Live Intersection Status</h2>
+            <div class="intersections-grid">
+                <!-- Intersection A -->
+                <div class="intersection-card" id="intersection-A">
+                    <h3>Intersection A <span class="status-indicator normal" id="status-A">Normal</span></h3>
+                    <div class="approaches">
+                        <div class="approach north">N: <span class="vehicle-count" id="A-N-vehicles">0</span></div>
+                        <div class="approach south">S: <span class="vehicle-count" id="A-S-vehicles">0</span></div>
+                        <div class="approach east">E: <span class="vehicle-count" id="A-E-vehicles">0</span></div>
+                        <div class="approach west">W: <span class="vehicle-count" id="A-W-vehicles">0</span></div>
+                    </div>
+                    <div class="traffic-light-display">
+                        <div class="light-pair">
+                            <span>N/S:</span>
+                            <div class="light red active" id="A-NS-red"></div> <!-- Initial state red -->
+                            <div class="light yellow" id="A-NS-yellow"></div>
+                            <div class="light green" id="A-NS-green"></div>
+                        </div>
+                        <div class="light-pair">
+                            <span>E/W:</span>
+                            <div class="light red active" id="A-EW-red"></div> <!-- Initial state red -->
+                            <div class="light yellow" id="A-EW-yellow"></div>
+                            <div class="light green" id="A-EW-green"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Intersection B -->
+                <div class="intersection-card" id="intersection-B">
+                    <h3>Intersection B <span class="status-indicator normal" id="status-B">Normal</span></h3>
+                     <div class="approaches">
+                        <div class="approach north">N: <span class="vehicle-count" id="B-N-vehicles">0</span></div>
+                        <div class="approach south">S: <span class="vehicle-count" id="B-S-vehicles">0</span></div>
+                        <div class="approach east">E: <span class="vehicle-count" id="B-E-vehicles">0</span></div>
+                        <div class="approach west">W: <span class="vehicle-count" id="B-W-vehicles">0</span></div>
+                    </div>
+                    <div class="traffic-light-display">
+                        <div class="light-pair">
+                            <span>N/S:</span>
+                            <div class="light red active" id="B-NS-red"></div>
+                            <div class="light yellow" id="B-NS-yellow"></div>
+                            <div class="light green" id="B-NS-green"></div>
+                        </div>
+                        <div class="light-pair">
+                            <span>E/W:</span>
+                            <div class="light red active" id="B-EW-red"></div>
+                            <div class="light yellow" id="B-EW-yellow"></div>
+                            <div class="light green" id="B-EW-green"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Intersection C -->
+                <div class="intersection-card" id="intersection-C">
+                    <h3>Intersection C <span class="status-indicator normal" id="status-C">Normal</span></h3>
+                     <div class="approaches">
+                        <div class="approach north">N: <span class="vehicle-count" id="C-N-vehicles">0</span></div>
+                        <div class="approach south">S: <span class="vehicle-count" id="C-S-vehicles">0</span></div>
+                        <div class="approach east">E: <span class="vehicle-count" id="C-E-vehicles">0</span></div>
+                        <div class="approach west">W: <span class="vehicle-count" id="C-W-vehicles">0</span></div>
+                    </div>
+                    <div class="traffic-light-display">
+                        <div class="light-pair">
+                            <span>N/S:</span>
+                            <div class="light red active" id="C-NS-red"></div>
+                            <div class="light yellow" id="C-NS-yellow"></div>
+                            <div class="light green" id="C-NS-green"></div>
+                        </div>
+                        <div class="light-pair">
+                            <span>E/W:</span>
+                            <div class="light red active" id="C-EW-red"></div>
+                            <div class="light yellow" id="C-EW-yellow"></div>
+                            <div class="light green" id="C-EW-green"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="system-log-section">
+            <h2>System Log</h2>
+            <div class="system-log">
+                <ul id="log-messages">
+                    <li>Advanced Simulation Ready.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="analytics" class="conceptual-section">
+            <h2>Analytics & Reporting (Conceptual)</h2>
+            <p>This section would display historical data, trend analysis, heatmaps of congestion, effectiveness of implemented strategies, etc. Building this requires a backend and actual data collection.</p>
+            <img src="Screenshot 2025-06-02 233827.png" alt="Analytics Chart Placeholder" style="width:100%; max-width:600px; margin-top:15px; border:1px solid #ccc;">
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 Advanced Smart Traffic Management Solutions</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
